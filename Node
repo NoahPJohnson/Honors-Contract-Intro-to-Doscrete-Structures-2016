@@ -1,0 +1,49 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package BplusTree;
+
+/**
+ *
+ * @author Noah
+ */
+public class Node
+{
+ private int n = 7;
+ private int element;
+ private int[] keyArray = new int[n];
+ private Node[] children = new Node[n];
+
+ public Node()
+ {
+  
+ }        
+ 
+ public int BinarySearch(int key)
+ {
+  int low = 0;
+  int high = n - 1;
+  int mid = (low + high)/2;
+  boolean found = false;
+  while (low != high)
+    {
+     if (key == keyArray[mid])
+        {
+         found = true;
+         return keyArray[mid];  
+        }
+     else if (key < keyArray[mid])
+        {
+         high = (mid - 1);   
+        }
+     else 
+        { 
+         low = (mid + 1);
+        }
+    }
+  return 0;   
+ }
+ 
+}
