@@ -9,41 +9,119 @@ package BplusTree;
  *
  * @author Noah
  */
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Node
 {
- private int n = 7;
+ private int n = 3;
  private int element;
- private int[] keyArray = new int[n];
- private Node[] children = new Node[n];
+ private ArrayList<Integer> keyList;
+ private ArrayList<Node> children;
+ private int childCount = 0;
+ private boolean root = false;
 
- public Node()
+ public Node(boolean r)
  {
-  
+  keyList = new ArrayList();
+  children = new ArrayList();
+  root = r;
  }        
  
- public int BinarySearch(int key)
+ public int getN()
  {
-  int low = 0;
-  int high = n - 1;
-  int mid = (low + high)/2;
-  boolean found = false;
-  while (low != high)
-    {
-     if (key == keyArray[mid])
-        {
-         found = true;
-         return keyArray[mid];  
-        }
-     else if (key < keyArray[mid])
-        {
-         high = (mid - 1);   
-        }
-     else 
-        { 
-         low = (mid + 1);
-        }
-    }
-  return 0;   
+    return n;
+ } 
+ 
+ public boolean checkIfRoot()
+ {
+    return root;
+ }     
+ 
+ public ArrayList getKeyList()
+ {
+    return keyList;   
  }
  
+ public ArrayList<Node> getChildren()
+ {
+    return children;   
+ }        
+ 
+ public int getChildCount()
+ {
+     return childCount;
+ }  
+ 
+ public Node getChild(int i)
+ {
+     return children.get(i);
+ }        
+         
+ public void setKey(int e)
+ {
+    keyList.add(e);
+    Collections.sort(keyList);
+ }   
+ 
+ public void addChild()
+ {
+    childCount ++;
+    children.add(new Node(false));
+ }          
+ 
+ public boolean itemSearch(int key)
+ {
+    if (keyList.contains(key))
+       {
+        return true;
+       }
+    else
+       {
+        return false; 
+       } 
+ }       
+         
+ public void split()
+ {
+     int mid = n/2;
+     int midKey = keyList.get((n/2));
+     int index = 0;
+     if (checkIfRoot() == true)
+        {
+         addChild();
+         for (int i = 0; i < mid; i ++)
+             {
+              children.get(childCount-1).setKey(keyList.get(i));
+             }
+         addChild();
+         for (int i = mid; i < n; i ++)
+             {
+              children.get(childCount-1).setKey(keyList.get(i));
+             }
+         while (keyList.size() != 1)
+             {
+              if (keyList.get(index) != midKey)
+                 {
+                  System.out.println("removed");
+                  keyList.remove(index);
+                 }
+              index ++;
+             }
+        } 
+ }
+ 
+ public String toString()
+ {
+     String result = "";
+     for (int i = 0; i < keyList.size(); i ++)
+         {
+          result += keyList.get(i);
+          result += ",";
+         }
+     return result;
+ }        
 }
+
+
