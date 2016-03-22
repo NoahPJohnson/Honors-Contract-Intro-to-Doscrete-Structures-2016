@@ -1,0 +1,36 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package BplusTree;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author Noah
+ */
+public class TreeImplementation {
+
+    private int sen;
+    
+    BplusTree BpTree = new BplusTree();
+    
+    public static void main(String[] args) 
+    {
+        int sen = 0;
+        BplusTree BpTree = new BplusTree();
+        System.out.println("BpTreeConstructed");
+        System.out.println(BpTree.toString()); 
+        while(sen == 0)
+             {
+              System.out.println("Insert element: ");
+              BpTree.elementInsert();
+              System.out.println(BpTree.toString()); 
+              Scanner s = new Scanner(System.in);
+              sen = s.nextInt();
+             } 
+    }
+    
+}
