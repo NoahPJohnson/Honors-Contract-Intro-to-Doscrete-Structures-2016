@@ -5,6 +5,8 @@
  */
 package BplusTree;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Noah
@@ -12,12 +14,29 @@ package BplusTree;
 
 public class BplusTree
 {
+    private int index;
+    private int e;
     
-    Node Root = new Node();
+    Node Root = new Node(true);
     
-    public void elementInsert(int key)
+    public BplusTree()
     {
-          
+        
+    }        
+            
+    public void elementInsert()
+    {
+     Scanner s = new Scanner(System.in);
+     e = s.nextInt();
+     if (Root.itemSearch(e) == false)
+        { 
+         Root.setKey(e);
+        }
+     
+     if (Root.getKeyList().size() == Root.getN())
+        {
+         Root.split();   
+        } 
     }       
     
     public void Remove()
@@ -35,8 +54,17 @@ public class BplusTree
         
     }        
     
-    /*public String toString()
+    public String toString()
     {
-    
-    }*/      
+     String result = "";
+     result += Root.toString();
+     result += "\n";
+     for (int i = 0; i < Root.getChildCount(); i ++)
+         {
+          result += Root.getChild(i).toString();
+          result += "->";
+         }
+     result += "\n";
+     return result;
+    }      
 }
