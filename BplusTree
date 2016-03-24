@@ -18,7 +18,7 @@ public class BplusTree
     private int e;
     
     Node Root = new Node(true);
-    
+    Node target;
     public BplusTree()
     {
         
@@ -28,15 +28,8 @@ public class BplusTree
     {
      Scanner s = new Scanner(System.in);
      e = s.nextInt();
-     if (Root.itemSearch(e) == false)
-        { 
-         Root.setKey(e);
-        }
-     
-     if (Root.getKeyList().size() == Root.getN())
-        {
-         Root.split();   
-        } 
+     target = search(e);
+     target.setKey(e); 
     }       
     
     public void Remove()
@@ -49,11 +42,35 @@ public class BplusTree
         
     }   
     
-    public void search()
+    public Node search(int e)
     {
-        
-    }        
-    
+     int ind;
+     target = Root;
+     if (target.itemSearch(e) == false)
+        { 
+         while (target.getChildCount() != 0)
+               { 
+                ind = 0;
+                System.out.println("check");
+                while(ind < target.getKeyList().size())
+                     {
+                      if (e < target.getKey(ind))
+                         {
+                          target = target.getChild(ind);
+                          break;
+                         }
+                      else if (e > target.getKey(target.getN()))
+                         {
+                          target = target.getChild(target.getChildCount());
+                          break;
+                         } 
+                      ind ++;
+                     }  
+               }
+           }
+     return target;
+    }
+  
     public String toString()
     {
      String result = "";
