@@ -19,6 +19,9 @@ public class Node
  private int element;
  private ArrayList<Integer> keyList;
  private ArrayList<Node> children;
+ private Node sibling;
+ private Node parent;
+ 
  private int childCount = 0;
  private boolean root = false;
 
@@ -27,6 +30,10 @@ public class Node
   keyList = new ArrayList();
   children = new ArrayList();
   root = r;
+  if (root == false)
+     {
+         
+     } 
  }        
  
  public int getN()
@@ -43,6 +50,11 @@ public class Node
  {
     return keyList;   
  }
+ 
+ public int getKey(int i)
+ {
+    return keyList.get(i);
+ }        
  
  public ArrayList<Node> getChildren()
  {
@@ -63,6 +75,10 @@ public class Node
  {
     keyList.add(e);
     Collections.sort(keyList);
+    if (keyList.size() >= n)
+       {
+        split();   
+       } 
  }   
  
  public void addChild()
@@ -70,6 +86,22 @@ public class Node
     childCount ++;
     children.add(new Node(false));
  }          
+ 
+ public void addSibling()
+ {
+     
+ }  
+ 
+ public void addSpecificChild(Node c)
+ {
+     childCount ++;
+     children.add(c);
+ }        
+ 
+ public void addRootParent()
+ {
+     
+ }   
  
  public boolean itemSearch(int key)
  {
@@ -96,6 +128,7 @@ public class Node
               children.get(childCount-1).setKey(keyList.get(i));
              }
          addChild();
+         children.get(childCount-2).addSpecificChild(children.get(childCount-1));
          for (int i = mid; i < n; i ++)
              {
               children.get(childCount-1).setKey(keyList.get(i));
@@ -109,6 +142,19 @@ public class Node
                  }
               index ++;
              }
+        } 
+     else
+        {
+         addSibling();
+         for (int i = mid; i < keyList.size(); i ++)
+             {
+              children.get(childCount-1).setKey(keyList.get(i));
+             }
+         for (int i = mid; i < keyList.size(); i ++)
+             {
+              keyList.remove(i);
+             }
+         
         } 
  }
  
