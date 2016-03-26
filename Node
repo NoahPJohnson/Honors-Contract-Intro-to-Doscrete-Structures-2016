@@ -137,51 +137,60 @@ public class Node
                  {
                   oldChildren.add(children.get(i));   
                  }
+             while (children.size() != 0)
+                 { 
+                  children.remove(0);
+                 }
+             System.out.print("Children1: ");
+             System.out.println(children.toString());
+             addChild();
+             splitOne = children.get(children.size()-1);
+             for (int i = 0; i < mid; i ++)
+                 {
+                  splitOne.setKey(keyList.get(i));
+                  if (oldChildren.size() > 0)
+                     { 
+                      for (int q = 0; q < mid; q ++)
+                          {
+                           splitOne.children.add(oldChildren.get(q));
+                          }
+                     }     
+                 }
+             System.out.print("Children1: ");
+             System.out.println(splitOne.children.toString());
+             addChild();
+             splitTwo = children.get(children.size()-1);
+             for (int i = mid+1; i < n; i ++)
+                 {
+                  splitTwo.setKey(keyList.get(i));
+                  if (oldChildren.size() > 0)
+                     { 
+                      for (int q = mid; q < oldChildren.size()-1; q ++)
+                          {
+                           splitTwo.children.add(oldChildren.get(q));
+                          }
+                     }      
+                 }
+             //children.get(children.size()-2).addSpecificChild(children.get(childCount-1));
+             System.out.print("Children2: ");
+             System.out.println(splitTwo.children.toString());
+            }
+         else
+            {
+             //System.out.println("No kids");
+             addChild();
+             splitOne = children.get(children.size()-1);
+             for (int i = 0; i < mid; i ++)
+                 {
+                  splitOne.setKey(keyList.get(i));
+                 }
+             addChild();
+             splitOne = children.get(children.size()-1);
+             for (int i = mid; i < n; i ++)
+                 {
+                  splitOne.setKey(keyList.get(i));
+                 } 
             } 
-         
-         addChild();
-         splitOne = children.get(children.size()-1);
-         for (int i = 0; i < mid; i ++)
-             {
-              splitOne.setKey(keyList.get(i));
-              if (oldChildren.size() > 0)
-                 { 
-                  for (int q = 0; q < mid; q ++)
-                      {
-                       splitOne.children.add(oldChildren.get(q));
-                      }
-                  for (int q = 0; q < mid; q ++)
-                      {
-                       System.out.println("WHY");
-                       System.out.println(oldChildren.size());
-                       children.remove(q);
-                      }
-                 }     
-             }
-         System.out.print("Child1:");
-         System.out.println(children.get(0));
-         addChild();
-         splitOne = children.get(children.size()-1);
-         for (int i = mid; i < n; i ++)
-             {
-              splitOne.setKey(keyList.get(i));
-              if (oldChildren.size() > 0)
-                 { 
-                  for (int q = mid; q < oldChildren.size()-1; q ++)
-                      {
-                       splitOne.children.add(oldChildren.get(q));
-                      }
-                  for (int q = mid; q < children.size()-3; q ++)
-                      {
-                       System.out.println("WHY2");
-                       System.out.println(oldChildren.size());
-                       children.remove(q);
-                      }
-                 }     
-             }
-         //children.get(children.size()-2).addSpecificChild(children.get(childCount-1));
-         System.out.print("Child2:");
-         System.out.println(children.get(1));
          while (keyList.size() != 1)
              {
               if (keyList.get(index) != midKey)
@@ -225,7 +234,7 @@ public class Node
           result += ",";
          }
      return result;
- }        
+ }       
 }
 
 
