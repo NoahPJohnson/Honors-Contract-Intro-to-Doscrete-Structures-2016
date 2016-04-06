@@ -26,7 +26,7 @@ public class Node
  private Node splitOne;
  private Node splitTwo;
  
- private int childCount = 0;
+ private int childCount;
  private boolean root = false;
 
  public Node(boolean r)
@@ -39,6 +39,7 @@ public class Node
      {
       firstKey = keyList.get(0);
      }
+  childCount = 0;
   parent = null;
   root = r; 
  }        
@@ -150,7 +151,7 @@ public class Node
         {
          if (children.size() > 0)
             { 
-             System.out.print("Parent Secondary Split");
+             System.out.println("Parent Secondary Split");
              for (int i = 0; i < children.size(); i ++)
                  {
                   oldChildren.add(children.get(i));   
@@ -159,7 +160,7 @@ public class Node
                  { 
                   children.remove(0);
                  }
-             System.out.print("Children1: ");
+             System.out.print("ChildrenEmpty: ");
              System.out.println(children.toString());
 
              splitOne = new Node(false);
@@ -322,5 +323,3 @@ public class Node
      return result;
  }       
 }
-
-
