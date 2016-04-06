@@ -5,6 +5,13 @@
  */
 package BplusTree;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package BplusTree;
+
 import java.util.Scanner;
 
 /**
@@ -42,6 +49,7 @@ public class BplusTree
         { 
          System.out.println(target.getParent().getChildren().size());
         }*/ 
+     traverse();
     }       
     
     public void Remove()
@@ -52,6 +60,32 @@ public class BplusTree
     public void traverse()
     {
      target = Root;
+     index = 0;
+     while (target.getChildren().size() != 0)
+           {
+                target.getChildren().get(index).setParent(target);
+                target = target.getChildren().get(index);
+                index ++;
+                if (target.getChildren().size() == 0 && target != Root)
+                   {
+                    System.out.println("Leaf Node.");
+                    target = target.getParent();   
+                   }
+                else if (index == target.getChildren().size() && target != Root)
+                   {
+                    System.out.println("Covered all children.");
+                    index = target.getParent().getChildren().indexOf(target);
+                    target = target.getParent();
+                    index ++;
+                   }
+                if (index == target.getChildren().size() && target == Root)
+                   {
+                    System.out.println("Done");
+                    break;
+                   }
+                System.out.print("Index: ");
+                System.out.println(index);
+           } 
     }   
     
     public Node search(int e)
@@ -70,14 +104,14 @@ public class BplusTree
                      {
                       if (e < target.getKey(ind))
                          {
-                          target.getChild(ind).setParent(target);
+                          //target.getChild(ind).setParent(target);
                           //System.out.println(target.getChild(ind).getParent().toString());
                           target = target.getChild(ind);
                           break;
                          }
                       else if (e > target.getKey(target.getKeyList().size()-1))
                          {
-                          target.getChild(target.getChildCount()-1).setParent(target);
+                          //target.getChild(target.getChildCount()-1).setParent(target);
                           //System.out.println(target.getChild(ind).getParent().toString());
                           target = target.getChild(target.getChildCount()-1);
                           break;
@@ -96,13 +130,15 @@ public class BplusTree
      index = 0;
      String result = "";
      target = Root;
+     result += "Root: ";
      result += target.toString();
      result += "\n";
      
      for (int i = 0; i < target.getChildren().size(); i ++)
          {
+          result += "|";
           result += target.getChild(i).toString();
-          result += "->";
+          result += "| ";
          }
      result += "\n";
      target = Root;
@@ -119,8 +155,9 @@ public class BplusTree
              { 
               for (int q = 0; q < target.getChildren().size(); q ++)
                   {
+                   result += "|";
                    result += target.getChild(q).toString();
-                   result += "->";
+                   result += "| ";
                   }
              }
           target = target.getParent();
