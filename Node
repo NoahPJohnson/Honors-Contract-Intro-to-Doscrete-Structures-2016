@@ -160,8 +160,10 @@ public class Node
                  { 
                   children.remove(0);
                  }
-             System.out.print("ChildrenEmpty: ");
-             System.out.println(children.toString());
+             System.out.print("OldChildren: ");
+             System.out.println(oldChildren.toString());
+             //System.out.print("ChildrenEmpty: ");
+             //System.out.println(children.toString());
 
              splitOne = new Node(false);
              for (int i = 0; i < mid; i ++)
@@ -169,7 +171,7 @@ public class Node
                   splitOne.setKey(keyList.get(i));
                   if (oldChildren.size() > 0)
                      { 
-                      for (int q = 0; q < mid; q ++)
+                      for (int q = 0; q < oldChildren.size()/2; q ++)
                           {
                            splitOne.children.add(oldChildren.get(q));
                           }
@@ -184,7 +186,7 @@ public class Node
                   splitTwo.setKey(keyList.get(i));
                   if (oldChildren.size() > 0)
                      { 
-                      for (int q = mid; q < oldChildren.size()-1; q ++)
+                      for (int q = oldChildren.size()/2; q < oldChildren.size(); q ++)
                           {
                            splitTwo.children.add(oldChildren.get(q));
                           }
@@ -304,6 +306,8 @@ public class Node
                       } 
                   }
              }
+         System.out.print("NotParentSplit, Children: ");
+         System.out.println(parent.children.toString());
          while (oldChildren.size() != 0)
                  { 
                   oldChildren.remove(0);
@@ -323,3 +327,5 @@ public class Node
      return result;
  }       
 }
+
+
