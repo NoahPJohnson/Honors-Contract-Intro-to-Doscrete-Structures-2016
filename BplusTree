@@ -5,13 +5,6 @@
  */
 package BplusTree;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package BplusTree;
-
 import java.util.Scanner;
 
 /**
@@ -63,15 +56,19 @@ public class BplusTree
      index = 0;
      while (target.getChildren().size() != 0)
            {
+                System.out.print("Target: ");
+                System.out.println(target.toString());
+                System.out.print("Target's Kids: ");
+                System.out.println(target.getChildren().toString());
                 target.getChildren().get(index).setParent(target);
                 target = target.getChildren().get(index);
-                index ++;
                 if (target.getChildren().size() == 0 && target != Root)
                    {
                     System.out.println("Leaf Node.");
-                    target = target.getParent();   
+                    target = target.getParent(); 
+                    index ++;
                    }
-                else if (index == target.getChildren().size() && target != Root)
+                if (index == target.getChildren().size() && target != Root)
                    {
                     System.out.println("Covered all children.");
                     index = target.getParent().getChildren().indexOf(target);
@@ -113,7 +110,7 @@ public class BplusTree
                          {
                           //target.getChild(target.getChildCount()-1).setParent(target);
                           //System.out.println(target.getChild(ind).getParent().toString());
-                          target = target.getChild(target.getChildCount()-1);
+                          target = target.getChild(target.getChildren().size()-1);
                           break;
                          } 
                       ind ++;
