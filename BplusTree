@@ -15,11 +15,13 @@ import java.util.Scanner;
 public class BplusTree
 {
     private int index;
+    private int index2;
     private int e;
     private int treeHeight;
     
     Node Root = new Node(true);
     Node target;
+    
     public BplusTree()
     {
         treeHeight = 1;
@@ -37,6 +39,8 @@ public class BplusTree
      target = search(e);
      //System.out.println(target.toString());
      target.setKey(e); 
+     //System.out.print("ROOT: ");
+     //System.out.println(Root.toString());
      /*System.out.println(Root.getChildren().size());
      if (target.getParent() != null)
         { 
@@ -47,13 +51,17 @@ public class BplusTree
     
     public void Remove()
     {
-        
+     Scanner s = new Scanner(System.in);
+     e = s.nextInt();
+     target = search(e);
+     target.remKey(e);
     }               
 
     public void traverse()
     {
      target = Root;
      index = 0;
+     index2 = 0;
      while (target.getChildren().size() != 0)
            {
                 System.out.print("Target: ");
@@ -64,10 +72,17 @@ public class BplusTree
                 target = target.getChildren().get(index);
                 if (target.getChildren().size() == 0 && target != Root)
                    {
-                    System.out.println("Leaf Node.");
+                    System.out.print("Leaf Node: ");
+                    System.out.println(target.toString());
                     target = target.getParent(); 
                     index ++;
                    }
+                else if (target.getChildren().size() != 0 && target != Root)
+                   {
+                    System.out.print("Branch: ");
+                    System.out.println(target.toString());
+                    index = 0;   
+                   } 
                 if (index == target.getChildren().size() && target != Root)
                    {
                     System.out.println("Covered all children.");
@@ -82,43 +97,47 @@ public class BplusTree
                    }
                 System.out.print("Index: ");
                 System.out.println(index);
-           } 
+           }
+     System.out.print("Root: ");
+     System.out.println(Root.toString());
     }   
     
     public Node search(int e)
     {
      int ind;
      target = Root;
-    
-     if (target.itemSearch(e) == false)
-        { 
-         while (target.getChildren().size() != 0)
-               { 
-                ind = 0;
-                //System.out.println("check");
-                //System.out.println(target.getChildren().size());
-                while(ind < target.getKeyList().size())
+     
+     while (target.getChildren().size() != 0)
+           { 
+            ind = 0;
+            //System.out.println("check");
+            //System.out.println(target.getChildren().size());
+            while(ind < target.getKeyList().size())
+                 {
+                  if (e < target.getKey(ind))
                      {
-                      if (e < target.getKey(ind))
-                         {
-                          //target.getChild(ind).setParent(target);
-                          //System.out.println(target.getChild(ind).getParent().toString());
-                          target = target.getChild(ind);
-                          break;
-                         }
-                      else if (e > target.getKey(target.getKeyList().size()-1))
-                         {
-                          //target.getChild(target.getChildCount()-1).setParent(target);
-                          //System.out.println(target.getChild(ind).getParent().toString());
-                          target = target.getChild(target.getChildren().size()-1);
-                          break;
-                         } 
-                      ind ++;
-                     }  
-               }
+                      //target.getChild(ind).setParent(target);
+                      //System.out.println(target.getChild(ind).getParent().toString());
+                      target = target.getChild(ind);
+                      //System.out.println(target.getParent().toString());
+                      break;
+                     }
+                  else if (e > target.getKey(target.getKeyList().size()-1))
+                     {
+                      //target.getChild(target.getChildCount()-1).setParent(target);
+                      //System.out.println(target.getChild(ind).getParent().toString());
+                      target = target.getChild(target.getChildren().size()-1);
+                      break;
+                     } 
+                  ind ++;
+                 }  
            }
      //System.out.println("check2");
      //System.out.println(target.toString());
+     /*System.out.print("searchTarget: ");
+     System.out.println(target.toString());
+     System.out.print("Root: ");
+     System.out.println(Root.toString());*/
      return target;
     }
   
