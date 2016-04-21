@@ -22,6 +22,7 @@ public class Node
  private ArrayList<Node> children;
  private ArrayList<Node> oldChildren;
  private Node sibling;
+ private Node rightSibling;
  private Node parent;
  private Node splitOne;
  private Node splitTwo;
@@ -41,6 +42,8 @@ public class Node
      }
   childCount = 0;
   parent = null;
+  sibling = null;
+  rightSibling = null;
   root = r; 
  }        
  
@@ -91,13 +94,32 @@ public class Node
          
  public void setKey(int e)
  {
-    keyList.add(e);
+    if (!keyList.contains(e))
+       { 
+        keyList.add(e);
+       } 
     Collections.sort(keyList);
     if (keyList.size() >= n)
        {
         split();   
        } 
  }   
+ 
+ public void remKey(int e)
+ {
+    keyList.remove(keyList.indexOf(e));
+    if (keyList.size() < n/2)
+       {
+        if (sibling.getKeyList().size() < n/2)
+           {
+               
+           }
+        else
+           {
+               
+           } 
+       } 
+ }        
  
  public void addChild()
  {
@@ -113,7 +135,7 @@ public class Node
  
  public int getFirstKey()
  {
-  return firstKey;   
+     return firstKey;   
  }
  
  public int setFirstKey()
@@ -125,10 +147,14 @@ public class Node
   return firstKey;
  }    
  
- public void addRootParent()
+ public void setSibling(Node s)
  {
-     
- }   
+     sibling  = s;
+ } 
+ public void setRightSibling(Node s)
+ {
+     rightSibling = s;
+ }        
  
  public boolean itemSearch(int key)
  {
@@ -146,12 +172,12 @@ public class Node
  {
      int mid = n/2;
      int midKey = keyList.get((n/2));
-     int index = 0;
+     int index = 0; 
      if (checkIfRoot() == true)
-        {
+        { 
          if (children.size() > 0)
             { 
-             System.out.println("Parent Secondary Split");
+             System.out.println("Root Secondary Split");
              for (int i = 0; i < children.size(); i ++)
                  {
                   oldChildren.add(children.get(i));   
@@ -210,21 +236,32 @@ public class Node
                  { 
                   oldChildren.remove(0);
                  }
+             while (keyList.size() != 1)
+                {
+                 if (keyList.get(index) != midKey)
+                    {
+                     //System.out.println("removed");
+                     keyList.remove(index);
+                    }
+                 index ++;
+                }
             }
-         else
+        else 
             {
-             System.out.println("Parent Split");
+             System.out.println("Root Split");
              splitOne = new Node(false);
              for (int i = 0; i < mid; i ++)
                  {
                   splitOne.setKey(keyList.get(i));
                  }
-
+             
              splitTwo = new Node(false);
              for (int i = mid; i < n; i ++)
                  {
                   splitTwo.setKey(keyList.get(i));
                  }
+             splitOne.setRightSibling(splitTwo);
+             splitTwo.setSibling(splitOne);
              if (splitOne.setFirstKey() > splitTwo.setFirstKey())
                 { 
                  addSpecificChild(splitTwo);
@@ -235,86 +272,179 @@ public class Node
                  addSpecificChild(splitOne);
                  addSpecificChild(splitTwo);   
                 } 
-            } 
-         while (keyList.size() != 1)
-             {
-              if (keyList.get(index) != midKey)
-                 {
-                  //System.out.println("removed");
-                  keyList.remove(index);
-                 }
-              index ++;
-             }
-        } 
-     else
+             while (keyList.size() != 1)
+                {
+                 if (keyList.get(index) != midKey)
+                    {
+                     //System.out.println("removed");
+                     keyList.remove(index);
+                    }
+                 index ++;
+                }
+            }
+        }
+    else
         {
-         System.out.println("Not Parent Split");
-         //System.out.println(parent.toString());
-         splitOne = new Node(false);
-         sibling = splitOne;
-         for (int i = 0; i < parent.children.size(); i ++)
-             {
-              oldChildren.add(parent.children.get(i));   
-             }
-         oldChildren.add(splitOne);
-         while (parent.children.size() != 0)
-               { 
-                parent.children.remove(0);
-               }
-         //System.out.print("ParentKids: ");
-         //System.out.println(parent.children.toString());
-         for (int i = mid; i < n; i ++)
-             {
-              //System.out.println(parent.children.toString());
-              sibling.setKey(keyList.get(i));
-             }
-         while(keyList.size() > mid)
-             {
-              //System.out.println("splitcheck");
-              //System.out.println(keyList.get(keyList.size()-1));
-              if (keyList.get(keyList.size()-1) >= midKey)
-                 {     
-                  keyList.remove(keyList.size()-1);
+         if (children.size() > 0)
+            {
+             System.out.println("Parent Secondary Split");
+             for (int i = 0; i < children.size(); i ++)
+                 {
+                  oldChildren.add(children.get(i));   
                  } 
-             }
-         //System.out.println("splitTestThing1");
-         //System.out.println(oldChildren.size());
-         int ind = oldChildren.size();
-         for (int i = 0; i < ind; i ++)
-             {
-              sortList.add(oldChildren.get(i).setFirstKey());                 
-              //System.out.println(oldChildren.get(i).setFirstKey());
-              //System.out.println(i);
-             }
-         //System.out.println(sortList.toString());
-         Collections.sort(sortList);
-         //System.out.println("splitTestThing2");
-         //System.out.println(oldChildren.size());
-         //System.out.println(sortList.size()); 
-         for (int i = 0; i < ind; i ++)
-             {
-              //System.out.print("i");
-              //System.out.println(i);
-              for (int q = 0; q < ind; q ++)
-                  {
-                   //System.out.print("q");
-                   //System.out.println(q);
-                   if (oldChildren.get(q).getFirstKey() == sortList.get(i))
-                      {
-                       //System.out.println(oldChildren.get(q).toString());
-                       parent.children.add(oldChildren.get(q));
-                      } 
-                  }
-             }
-         System.out.print("NotParentSplit, Children: ");
-         System.out.println(parent.children.toString());
-         while (oldChildren.size() != 0)
+             
+             while (children.size() != 0)
+                 { 
+                  children.remove(0);
+                 }
+             System.out.print("OldChildren: ");
+             System.out.println(oldChildren.toString());
+             //System.out.print("ChildrenEmpty: ");
+             //System.out.println(children.toString());
+
+             splitOne = new Node(false);
+             for (int i = mid+1; i < n; i ++)
+                 {
+                  splitOne.setKey(keyList.get(i));
+                  if (oldChildren.size() > 0)
+                     { 
+                      for (int q = oldChildren.size()/2; q < oldChildren.size(); q ++)
+                          {
+                           splitOne.children.add(oldChildren.get(q));
+                          }
+                     }      
+                 }
+             //children.get(children.size()-2).addSpecificChild(children.get(childCount-1));
+             System.out.print("Children2: ");
+             System.out.println(splitOne.children.toString());
+             
+             while(keyList.size() > mid)
+                 {
+                  //System.out.println("splitcheck");
+                  //System.out.println(keyList.get(keyList.size()-1));
+                  if (keyList.get(keyList.size()-1) >= midKey)
+                     {     
+                      keyList.remove(keyList.size()-1);
+                     } 
+                 }
+             if (oldChildren.size() > 0)
+                { 
+                 for (int q = 0; q < oldChildren.size()/2; q ++)
+                     {
+                      this.children.add(oldChildren.get(q));
+                     }   
+                 }
+             System.out.print("Children1: ");
+             System.out.println(this.children.toString());
+             
+             splitOne.setParent(this.parent);
+             
+             parent.addSpecificChild(splitOne);
+             
+             while (oldChildren.size() != 0)
                  { 
                   oldChildren.remove(0);
                  }
-         parent.setKey(midKey);
+             while (keyList.size() != 1)
+                {
+                 if (keyList.get(index) != midKey)
+                    {
+                     //System.out.println("removed");
+                     keyList.remove(index);
+                    }
+                 index ++;
+                }   
+            }     
+         else
+            { 
+             System.out.println("Not Parent Split");
+             System.out.print("This node: ");
+             System.out.println(this.toString());
+             //System.out.println(parent.toString());
+             splitOne = new Node(false);
+             //rightSibling = splitOne;
+             for (int i = 0; i < parent.children.size(); i ++)
+                 {
+                  oldChildren.add(parent.children.get(i));   
+                 }
+             oldChildren.add(splitOne);
+             System.out.print("oldChildren: ");
+             System.out.println(oldChildren.toString());
+             while (parent.children.size() != 0)
+                   { 
+                    parent.children.remove(0);
+                   }
+             //System.out.print("ParentKids: ");
+             //System.out.println(parent.children.toString());
+             //rightSibling.setSibling(this);
+             for (int i = mid; i < n; i ++)
+                 {
+                  //System.out.println(parent.children.toString());
+                  splitOne.setKey(keyList.get(i));
+                 }
+             System.out.print("splitOne: ");
+             System.out.println(splitOne.toString());
+             while(keyList.size() > mid)
+                 {
+                  //System.out.println("splitcheck");
+                  //System.out.println(keyList.get(keyList.size()-1));
+                  if (keyList.get(keyList.size()-1) >= midKey)
+                     {     
+                      keyList.remove(keyList.size()-1);
+                     } 
+                 }
+             System.out.print("keyList: ");
+             System.out.println(keyList.toString());
+             //System.out.println("splitTestThing1");
+             //System.out.println(oldChildren.size());
+             int ind = oldChildren.size();
+             for (int i = 0; i < ind; i ++)
+                 {
+                  sortList.add(oldChildren.get(i).setFirstKey());                 
+                  //System.out.println(oldChildren.get(i).setFirstKey());
+                  //System.out.println(i);
+                 }
+             System.out.print("sortList: ");
+             System.out.println(sortList.toString());
+             Collections.sort(sortList);
+             //System.out.println("splitTestThing2");
+             //System.out.println(oldChildren.size());
+             //System.out.println(sortList.size()); 
+             for (int i = 0; i < ind; i ++)
+                 {
+                  //System.out.print("i");
+                  //System.out.println(i);
+                  for (int q = 0; q < ind; q ++)
+                      {
+                       //System.out.print("q");
+                       //System.out.println(q);
+                       if (oldChildren.get(q).getFirstKey() == sortList.get(i))
+                          {
+                           System.out.print("addThis: ");
+                           System.out.println(oldChildren.get(q).toString());
+                           parent.children.add(oldChildren.get(q));
+                          } 
+                      }
+                 }
+             System.out.print("NotParentSplit, Children: ");
+             System.out.println(parent.children.toString());
+             while (oldChildren.size() != 0)
+                   { 
+                    oldChildren.remove(0);
+                   }
+             while (sortList.size() != 0)
+                   { 
+                    sortList.remove(0);
+                   }
+             parent.setKey(midKey);
+            }
         } 
  }
+ 
+ public void merge()
+ {
+     
+ }         
  
  public String toString()
  {
@@ -327,5 +457,4 @@ public class Node
      return result;
  }       
 }
-
 
