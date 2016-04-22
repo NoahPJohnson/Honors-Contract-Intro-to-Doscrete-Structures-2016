@@ -23,12 +23,21 @@ public class TreeImplementation {
         BplusTree BpTree = new BplusTree();
         System.out.println("BpTreeConstructed");
         System.out.println(BpTree.toString()); 
-        while(sen == 0)
+        while(sen != 2)
              {
-              System.out.println("Insert element: ");
-              BpTree.elementInsert();
-              System.out.println(BpTree.toString()); 
+              System.out.println("Insert/ Remove element: ");
               Scanner s = new Scanner(System.in);
+              if (sen == 0)
+                 {  
+                  BpTree.elementInsert();
+                  System.out.println(BpTree.toString()); 
+                 }
+              else if (sen == 1)
+                 {  
+                  BpTree.Remove();
+                  System.out.println(BpTree.toString()); 
+                 } 
+              System.out.println("Choose 0 / 1");
               sen = s.nextInt();
              } 
     }
