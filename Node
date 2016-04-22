@@ -21,7 +21,7 @@ public class Node
  private ArrayList<Integer> sortList;
  private ArrayList<Node> children;
  private ArrayList<Node> oldChildren;
- private Node sibling;
+ private Node leftSibling;
  private Node rightSibling;
  private Node parent;
  private Node splitOne;
@@ -42,7 +42,7 @@ public class Node
      }
   childCount = 0;
   parent = null;
-  sibling = null;
+  leftSibling = null;
   rightSibling = null;
   root = r; 
  }        
@@ -110,7 +110,7 @@ public class Node
     keyList.remove(keyList.indexOf(e));
     if (keyList.size() < n/2)
        {
-        if (sibling.getKeyList().size() < n/2)
+        if (leftSibling.getKeyList().size() < n/2)
            {
                
            }
@@ -147,9 +147,9 @@ public class Node
   return firstKey;
  }    
  
- public void setSibling(Node s)
+ public void setLeftSibling(Node s)
  {
-     sibling  = s;
+     leftSibling  = s;
  } 
  public void setRightSibling(Node s)
  {
@@ -260,8 +260,8 @@ public class Node
                  {
                   splitTwo.setKey(keyList.get(i));
                  }
-             splitOne.setRightSibling(splitTwo);
-             splitTwo.setSibling(splitOne);
+             //splitOne.setRightSibling(splitTwo);
+             //splitTwo.setleftSibling(splitOne);
              if (splitOne.setFirstKey() > splitTwo.setFirstKey())
                 { 
                  addSpecificChild(splitTwo);
@@ -457,4 +457,5 @@ public class Node
      return result;
  }       
 }
+
 
