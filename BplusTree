@@ -19,8 +19,11 @@ public class BplusTree
     private int e;
     private int treeHeight;
     
+    private boolean done;
+    
     Node Root = new Node(true);
     Node target;
+    Node target2;
     
     public BplusTree()
     {
@@ -101,6 +104,54 @@ public class BplusTree
      System.out.print("Root: ");
      System.out.println(Root.toString());
     }   
+    
+    public void siblingTraverse()
+    {
+     done = false;
+     target = Root;
+     index = 0;
+     index2 = index+1;
+     while (target.getChildren().size() != 0)
+         {
+          target = target.getChildren().get(index);
+         }
+     index ++;
+     
+     target2 = target.getParent();
+     
+     while (done = false)
+         {
+          while(target2.getChildren().size() != 0)
+               {
+                if (index < target2.getChildren().size())
+                   { 
+                    target2 = target.getChildren().get(index);
+                    if (target2.getChildren().size() != 0)
+                       {
+                        index = 0;   
+                       } 
+                   }
+                else
+                   {
+                    index = target2.getParent().getChildren().indexOf(target2) + 1;
+                    if (target.getParent() != null)
+                       { 
+                        target2 = target2.getParent();
+                       }
+                    else
+                       {
+                        done = true;
+                        break; 
+                       } 
+                   }
+               }
+          target.setRightSibling(target2);
+          target2.setLeftSibling(target);
+          target = target2;
+          target2 = target.getParent();
+          index ++;
+         } 
+    }        
     
     public Node search(int e)
     {
