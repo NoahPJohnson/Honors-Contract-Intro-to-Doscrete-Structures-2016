@@ -50,6 +50,8 @@ public class BplusTree
          System.out.println(target.getParent().getChildren().size());
         }*/ 
      traverse();
+     siblingTraverse();
+     siblingTest();
     }       
     
     public void Remove()
@@ -73,6 +75,8 @@ public class BplusTree
                 System.out.println(target.getChildren().toString());
                 target.getChildren().get(index).setParent(target);
                 target = target.getChildren().get(index);
+                target.setLeftSibling(null);
+                target.setRightSibling(null);
                 if (target.getChildren().size() == 0 && target != Root)
                    {
                     System.out.print("Leaf Node: ");
@@ -86,7 +90,7 @@ public class BplusTree
                     System.out.println(target.toString());
                     index = 0;   
                    } 
-                if (index == target.getChildren().size() && target != Root)
+                while (index >= target.getChildren().size() && target != Root)
                    {
                     System.out.println("Covered all children.");
                     index = target.getParent().getChildren().indexOf(target);
@@ -119,23 +123,25 @@ public class BplusTree
      
      target2 = target.getParent();
      
-     while (done = false)
+     while (done == false && target2 != null)
          {
           while(target2.getChildren().size() != 0)
                {
                 if (index < target2.getChildren().size())
                    { 
-                    target2 = target.getChildren().get(index);
+                    target2 = target2.getChildren().get(index);
                     if (target2.getChildren().size() != 0)
                        {
                         index = 0;   
                        } 
+                    //System.out.print("Going Down: ");
+                    //System.out.println(target2.toString());
                    }
                 else
                    {
-                    index = target2.getParent().getChildren().indexOf(target2) + 1;
-                    if (target.getParent() != null)
+                    if (target2.getParent() != null)
                        { 
+                        index = target2.getParent().getChildren().indexOf(target2) + 1;
                         target2 = target2.getParent();
                        }
                     else
@@ -143,15 +149,40 @@ public class BplusTree
                         done = true;
                         break; 
                        } 
+                    //System.out.print("Going up: ");
+                    //System.out.println(target2.toString());
                    }
                }
-          target.setRightSibling(target2);
-          target2.setLeftSibling(target);
+          if (target2 != Root)
+             { 
+              target.setRightSibling(target2);
+              target2.setLeftSibling(target);
+             } 
           target = target2;
           target2 = target.getParent();
           index ++;
          } 
     }        
+            
+    public void siblingTest()
+    {
+     target = Root;
+     while (target.getChildren().size() != 0)
+         {
+          target = target.getChildren().get(0);
+         }   
+     System.out.print("[");
+     System.out.print(target.toString());
+     System.out.print("] ");
+     while(target.getRightSibling() != null)
+         {
+          target = target.getRightSibling();
+          System.out.print("[");
+          System.out.print(target.toString());
+          System.out.print("] ");
+         }
+     System.out.println();
+    }
     
     public Node search(int e)
     {
