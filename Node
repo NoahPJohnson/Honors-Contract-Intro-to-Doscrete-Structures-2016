@@ -151,10 +151,21 @@ public class Node
  {
      leftSibling  = s;
  } 
+ 
+ public Node getLeftSibling()
+ {
+     return leftSibling;    
+ }   
+ 
  public void setRightSibling(Node s)
  {
      rightSibling = s;
  }        
+ 
+ public Node getRightSibling()
+ {
+     return rightSibling;    
+ }
  
  public boolean itemSearch(int key)
  {
@@ -354,6 +365,7 @@ public class Node
                     }
                  index ++;
                 }   
+             parent.setKey(midKey);
             }     
          else
             { 
