@@ -27,6 +27,9 @@ public class Node
  private Node splitOne;
  private Node splitTwo;
  
+ private Node target;
+ private Node target2;
+ 
  private int childCount;
  private boolean root = false;
 
@@ -108,16 +111,34 @@ public class Node
  public void remKey(int e)
  {
     keyList.remove(keyList.indexOf(e));
+    target = this;
+    target2 = target;
+    target = target.parent;
+    while (target != null)
+            {
+             //System.out.print("removeTarget: ");
+             //System.out.println(target.toString());
+             if (target.keyList.contains(e))
+                {
+                 System.out.print("Ancestor to remove from: ");
+                 System.out.println(target.toString());
+                 target.keyList.remove(target.keyList.indexOf(e));
+                 target.keyList.add(0, target2.getFirstKey());
+                 Collections.sort(keyList);
+                } 
+             target2 = target;
+             target = target.parent;
+            }
     if (keyList.size() < n/2)
-       {
-        if (leftSibling.getKeyList().size() < n/2)
+       { 
+        if (leftSibling != null && leftSibling.getKeyList().size() > n/2)
            {
-               
-           }
-        else
-           {
-               
+            leftRedistribute();  
            } 
+        else if (rightSibling != null && rightSibling.getKeyList().size() > n/2)
+           {
+            rightRedistribute();    
+           }
        } 
  }        
  
@@ -135,16 +156,16 @@ public class Node
  
  public int getFirstKey()
  {
+     setFirstKey();
      return firstKey;   
  }
  
- public int setFirstKey()
+ public void setFirstKey()
  {
   if (keyList.size() != 0)
      {
       firstKey = keyList.get(0);
      } 
-  return firstKey;
  }    
  
  public void setLeftSibling(Node s)
@@ -233,7 +254,7 @@ public class Node
              System.out.print("Children2: ");
              System.out.println(splitTwo.children.toString());
              
-             if (splitOne.setFirstKey() > splitTwo.setFirstKey())
+             if (splitOne.getFirstKey() > splitTwo.getFirstKey())
                 { 
                  addSpecificChild(splitTwo);
                  addSpecificChild(splitOne);
@@ -273,7 +294,7 @@ public class Node
                  }
              //splitOne.setRightSibling(splitTwo);
              //splitTwo.setleftSibling(splitOne);
-             if (splitOne.setFirstKey() > splitTwo.setFirstKey())
+             if (splitOne.getFirstKey() > splitTwo.getFirstKey())
                 { 
                  addSpecificChild(splitTwo);
                  addSpecificChild(splitOne);
@@ -412,7 +433,7 @@ public class Node
              int ind = oldChildren.size();
              for (int i = 0; i < ind; i ++)
                  {
-                  sortList.add(oldChildren.get(i).setFirstKey());                 
+                  sortList.add(oldChildren.get(i).getFirstKey());                 
                   //System.out.println(oldChildren.get(i).setFirstKey());
                   //System.out.println(i);
                  }
@@ -451,6 +472,34 @@ public class Node
              parent.setKey(midKey);
             }
         } 
+ }
+ 
+ public void rightRedistribute()
+ {
+     keyList.add(rightSibling.getFirstKey());
+     rightSibling.keyList.remove(0);
+     while (parent.keyList.size() != 0)
+         {
+          parent.keyList.remove(0);
+         }
+     for (int i = 1; i < parent.getChildren().size(); i ++)
+         {
+          parent.keyList.add(parent.getChild(i).getFirstKey());
+         }
+ }
+ 
+ public void leftRedistribute()
+ {
+     keyList.add(leftSibling.keyList.get(leftSibling.keyList.size()-1));
+     leftSibling.keyList.remove(leftSibling.keyList.size()-1);
+     while (parent.keyList.size() != 0)
+         {
+          parent.keyList.remove(0);
+         }
+     for (int i = 1; i < parent.getChildren().size(); i ++)
+         {
+          parent.keyList.add(parent.getChild(i).getFirstKey());
+         }
  }
  
  public void merge()
