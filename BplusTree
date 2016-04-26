@@ -21,9 +21,9 @@ public class BplusTree
     
     private boolean done;
     
-    Node Root = new Node(true);
-    Node target;
-    Node target2;
+    private Node Root = new Node(true);
+    private Node target;
+    private Node target2;
     
     public BplusTree()
     {
@@ -201,6 +201,14 @@ public class BplusTree
                       //target.getChild(ind).setParent(target);
                       //System.out.println(target.getChild(ind).getParent().toString());
                       target = target.getChild(ind);
+                      //System.out.println(target.getParent().toString());
+                      break;
+                     }
+                  if (e == target.getKey(ind))
+                     {
+                      //target.getChild(ind).setParent(target);
+                      //System.out.println(target.getChild(ind).getParent().toString());
+                      target = target.getChild(ind+1);
                       //System.out.println(target.getParent().toString());
                       break;
                      }
