@@ -15,7 +15,7 @@ public class TreeImplementation {
 
     private int sen;
     
-    BplusTree BpTree = new BplusTree();
+    BplusTree BpTree;
     
     public static void main(String[] args) 
     {
