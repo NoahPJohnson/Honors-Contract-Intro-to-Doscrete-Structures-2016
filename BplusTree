@@ -21,19 +21,34 @@ public class BplusTree
     
     private boolean done;
     
-    private Node Root = new Node(true);
+    private Node Root; 
     private Node target;
     private Node target2;
     
     public BplusTree()
     {
-        treeHeight = 1;
+     target = new Node(true);
+     setRoot(target);
     }        
     
     public void incrementHeight()
     {
-        treeHeight ++;
+     treeHeight ++;
     }     
+        
+    public void setRoot(Node t)
+    {
+     target = t;
+     if (target.checkIfRoot() == true)
+        {
+         Root = target;   
+        } 
+    }
+ 
+    public Node getRoot()
+    {
+     return Root;
+    }
     
     public void elementInsert()
     {
@@ -60,11 +75,16 @@ public class BplusTree
      e = s.nextInt();
      target = search(e);
      target.remKey(e);
+     if (target.getNewRoot() != null)
+        {
+         setRoot(target.getNewRoot());   
+        }
+     target.setNewRoot(null);
     }               
 
     public void traverse()
     {
-     target = Root;
+     target = getRoot();
      index = 0;
      index2 = 0;
      while (target.getChildren().size() != 0)
@@ -77,27 +97,27 @@ public class BplusTree
                 target = target.getChildren().get(index);
                 target.setLeftSibling(null);
                 target.setRightSibling(null);
-                if (target.getChildren().size() == 0 && target != Root)
+                if (target.getChildren().size() == 0 && target != getRoot())
                    {
                     System.out.print("Leaf Node: ");
                     System.out.println(target.toString());
                     target = target.getParent(); 
                     index ++;
                    }
-                else if (target.getChildren().size() != 0 && target != Root)
+                else if (target.getChildren().size() != 0 && target != getRoot())
                    {
                     System.out.print("Branch: ");
                     System.out.println(target.toString());
                     index = 0;   
                    } 
-                while (index >= target.getChildren().size() && target != Root)
+                while (index >= target.getChildren().size() && target != getRoot())
                    {
                     System.out.println("Covered all children.");
                     index = target.getParent().getChildren().indexOf(target);
                     target = target.getParent();
                     index ++;
                    }
-                if (index == target.getChildren().size() && target == Root)
+                if (index == target.getChildren().size() && target == getRoot())
                    {
                     System.out.println("Done");
                     break;
@@ -106,13 +126,13 @@ public class BplusTree
                 System.out.println(index);
            }
      System.out.print("Root: ");
-     System.out.println(Root.toString());
+     System.out.println(getRoot().toString());
     }   
     
     public void siblingTraverse()
     {
      done = false;
-     target = Root;
+     target = getRoot();
      index = 0;
      index2 = index+1;
      while (target.getChildren().size() != 0)
@@ -153,7 +173,7 @@ public class BplusTree
                     //System.out.println(target2.toString());
                    }
                }
-          if (target2 != Root)
+          if (target2 != getRoot())
              { 
               target.setRightSibling(target2);
               target2.setLeftSibling(target);
@@ -166,7 +186,7 @@ public class BplusTree
             
     public void siblingTest()
     {
-     target = Root;
+     target = getRoot();
      while (target.getChildren().size() != 0)
          {
           target = target.getChildren().get(0);
@@ -187,7 +207,7 @@ public class BplusTree
     public Node search(int e)
     {
      int ind;
-     target = Root;
+     target = getRoot();
      
      while (target.getChildren().size() != 0)
            { 
@@ -235,7 +255,7 @@ public class BplusTree
     {
      index = 0;
      String result = "";
-     target = Root;
+     target = getRoot();
      result += "Root: ";
      result += target.toString();
      result += "\n";
@@ -247,7 +267,7 @@ public class BplusTree
           result += "| ";
          }
      result += "\n";
-     target = Root;
+     target = getRoot();
      for (int i = 0; i < target.getChildren().size(); i ++)
          {
           System.out.print("i: ");
