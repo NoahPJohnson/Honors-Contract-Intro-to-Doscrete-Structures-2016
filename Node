@@ -33,6 +33,7 @@ public class Node
  
  private int childCount;
  private boolean root = false;
+ private boolean covered = false;
 
  public Node(boolean r)
  {
@@ -76,6 +77,16 @@ public class Node
     return root;
  }     
 
+ public void setIfCovered(boolean c)
+ {
+     covered = c;
+ }        
+ 
+ public boolean checkIfCovered()
+ {
+    return covered;
+ } 
+ 
  public void setNewRoot(Node t)
  {
      newRoot = t;
