@@ -50,10 +50,11 @@ public class BplusTree
      return Root;
     }
     
-    public void elementInsert()
+    public void elementInsert(int e)
     {
-     Scanner s = new Scanner(System.in);
-     e = s.nextInt();
+     //Scanner s = new Scanner(System.in);
+     //e = s.nextInt();
+     
      target = search(e);
      //System.out.println(target.toString());
      target.setKey(e); 
@@ -256,37 +257,69 @@ public class BplusTree
      index = 0;
      String result = "";
      target = getRoot();
+     //target2 = getRoot();
      result += "Root: ";
      result += target.toString();
      result += "\n";
      
-     for (int i = 0; i < target.getChildren().size(); i ++)
+     System.out.print("toStringRoot: ");
+     System.out.println(target);
+     index = 0;
+     while (target.getChildren().size() > 0)
          {
-          result += "|";
-          result += target.getChild(i).toString();
-          result += "| ";
-         }
-     result += "\n";
-     target = getRoot();
-     for (int i = 0; i < target.getChildren().size(); i ++)
-         {
-          System.out.print("i: ");
-          System.out.println(i);
-          //System.out.println(target.getChildren().size());
-          target = target.getChild(i);
-          System.out.print("target: ");
-          System.out.println(target.toString());
-          System.out.println(target.getParent().toString());
-          if (target.getChildren().size() > 0)
-             { 
-              for (int q = 0; q < target.getChildren().size(); q ++)
+          target = target.getChildren().get(index);
+          while (target.getChildren().size() == 0 && target != getRoot())
+              {
+               System.out.print("toStringLeaf: ");
+               System.out.println(target);
+               result += "|";
+               result += target.toString();
+               result += "| ";
+               target.setIfCovered(true);
+               if (target.getRightSibling() != null)
+                  { 
+                   target = target.getRightSibling();
+                  } 
+               else
                   {
-                   result += "|";
-                   result += target.getChild(q).toString();
-                   result += "| ";
-                  }
+                   System.out.print("targetKidSize: ");
+                   System.out.println(target.getChildren().size());
+                   break;   
+                  } 
+              }
+          if (target.getChildren().size() != 0 && target != getRoot())
+             {
+              if (target.checkIfCovered() == false)
+                 {
+                  System.out.print("toStringBranch: ");
+                  System.out.println(target);   
+                  result += "|";
+                  result += target.toString();
+                  result += "| ";
+                  target.setIfCovered(true);
+                  target = target.getParent();
+                  index ++;
+                 }
+              else
+                 {
+                  System.out.println("Pass");
+                  index = 0;
+                  //target = target.getChild(index);
+                 } 
+             } 
+          while (index >= target.getChildren().size() && target.getChildren().size() != 0 &&target != getRoot())
+              {
+               //target.setIfCovered(true);
+               index = target.getParent().getChildren().indexOf(target);
+               target = target.getParent();
+               index ++;
+              }
+          if (index >= target.getChildren().size() && target == getRoot())
+             {
+              result += "\n";
+              index = 0;
+              target = target.getChild(index);
              }
-          target = target.getParent();
          }
      result += "\n";
      return result;
