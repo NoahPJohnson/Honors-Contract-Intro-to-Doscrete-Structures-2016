@@ -153,7 +153,6 @@ public class Node
                  target.keyList.add(0, target2.getFirstKey());
                  Collections.sort(keyList);
                 } 
-             target2 = target;
              target = target.parent;
             }
     if (keyList.size() < n/2)
@@ -406,8 +405,21 @@ public class Node
              
              splitOne.setParent(this.parent);
              
-             parent.addSpecificChild(splitOne);
-             
+             for (int i = 0; i < parent.getChildren().size(); i ++)
+                 {
+                  if (i == parent.getChildren().size())
+                     {
+                      parent.getChildren().add(i, splitOne); 
+                      break;
+                     } 
+                  else if (splitOne.getFirstKey() < parent.getChildren().get(i).getFirstKey())   
+                     {
+                      parent.getChildren().add(i, splitOne);
+                      break;
+                     }
+                  System.out.print("inOrder: ");
+                  System.out.println(parent.getChildren().get(i).toString());
+                 }
              while (oldChildren.size() != 0)
                  { 
                   oldChildren.remove(0);
