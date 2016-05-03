@@ -81,6 +81,9 @@ public class BplusTree
          setRoot(target.getNewRoot());   
         }
      target.setNewRoot(null);
+     traverse();
+     siblingTraverse();
+     siblingTest();
     }               
 
     public void traverse()
@@ -102,6 +105,7 @@ public class BplusTree
                    {
                     System.out.print("Leaf Node: ");
                     System.out.println(target.toString());
+                    target.setIfCovered(false);
                     target = target.getParent(); 
                     index ++;
                    }
@@ -109,18 +113,21 @@ public class BplusTree
                    {
                     System.out.print("Branch: ");
                     System.out.println(target.toString());
+                    target.setIfCovered(false);
                     index = 0;   
                    } 
                 while (index >= target.getChildren().size() && target != getRoot())
                    {
                     System.out.println("Covered all children.");
                     index = target.getParent().getChildren().indexOf(target);
+                    target.setIfCovered(false);
                     target = target.getParent();
                     index ++;
                    }
                 if (index == target.getChildren().size() && target == getRoot())
                    {
                     System.out.println("Done");
+                    target.setIfCovered(false);
                     break;
                    }
                 System.out.print("Index: ");
@@ -223,14 +230,16 @@ public class BplusTree
                       //System.out.println(target.getChild(ind).getParent().toString());
                       target = target.getChild(ind);
                       //System.out.println(target.getParent().toString());
+                      System.out.println("LEFT");
                       break;
                      }
-                  if (e == target.getKey(ind))
+                  else if (e == target.getKey(ind))
                      {
                       //target.getChild(ind).setParent(target);
                       //System.out.println(target.getChild(ind).getParent().toString());
                       target = target.getChild(ind+1);
                       //System.out.println(target.getParent().toString());
+                      System.out.println("RIGHT");
                       break;
                      }
                   else if (e > target.getKey(target.getKeyList().size()-1))
@@ -238,13 +247,14 @@ public class BplusTree
                       //target.getChild(target.getChildCount()-1).setParent(target);
                       //System.out.println(target.getChild(ind).getParent().toString());
                       target = target.getChild(target.getChildren().size()-1);
+                      System.out.println("WAYRIGHT");
                       break;
                      } 
                   ind ++;
                  }  
            }
-     //System.out.println("check2");
-     //System.out.println(target.toString());
+     System.out.print("check2");
+     System.out.println(target.toString());
      /*System.out.print("searchTarget: ");
      System.out.println(target.toString());
      System.out.print("Root: ");
